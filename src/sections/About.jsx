@@ -12,6 +12,18 @@ function About() {
           <p className="text-lg text-muted-foreground max-w-md mx-auto md:mx-0">
             I am...
           </p>
+
+          <h1 className="text-5xl md:text-4xl font-bold text-primary">
+            Education
+          </h1>
+
+          <p>
+            University of Waterloo
+          </p>
+
+          <p>
+            London Central Secondary School
+          </p>
         </div>
 
         {/* RIGHT COLUMN */}

@@ -23,3 +23,4 @@ If you are developing a production application, we recommend using TypeScript wi
 - navbar links not working
 - not cool, maybe add a section w something interesting, or more about me ig
 - idk man
+- about section, maybe use some cards to separate things
