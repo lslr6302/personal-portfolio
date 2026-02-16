@@ -17,9 +17,9 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## ToDo
 
-timeline not showing in the project section
-contents not filled out
-fade in animation not working
-navbar links not working
-not cool, maybe add a section w something interesting, or more about me ig
-idk man
+- timeline not showing in the project section
+- contents not filled out
+- fade in animation not working
+- navbar links not working
+- not cool, maybe add a section w something interesting, or more about me ig
+- idk man
