@@ -43,7 +43,7 @@ function hexToRgb(hex) {
 export const Particles = ({
   className = "",
   children,
-  quantity = 150,
+  quantity = 350,
   staticity = 50,
   ease = 50,
   size = 0.4,
@@ -138,7 +138,7 @@ export const Particles = ({
       targetAlpha,
       dx: (Math.random() - 0.5) * 0.1,
       dy: (Math.random() - 0.5) * 0.1,
-      magnetism: 0.1 + Math.random() * 4,
+      magnetism: 0.5 + Math.random() * 6,
     }
   }
 
