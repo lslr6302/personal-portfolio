@@ -1,4 +1,8 @@
 import Particles from "./components/ParticlesBg"
+import Navbar from "./sections/Navbar"
+import Heading from "./sections/Heading"
+import About from "./sections/About"
+import Projects from "./sections/Projects"
 
 function App() {
   return (
@@ -7,12 +11,10 @@ function App() {
       {/* Background Particles */}
       <Particles className="-z-10" />
 
-      {/* Foreground Content */}
-      <div className="flex items-center justify-center min-h-screen relative z-10">
-        <h1 className="text-4xl font-bold text-primary">
-          Cosmic Night 🌌
-        </h1>
-      </div>
+      <Navbar />
+      <Heading />
+      <About />
+      <Projects />
 
     </div>
   )

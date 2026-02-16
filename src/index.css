@@ -1,54 +1,11 @@
 @import "tailwindcss";
 
-/* ============================= */
-/*        COSMIC NIGHT THEME     */
-/* ============================= */
-
 @theme {
-  /* Light Mode */
-  --background: oklch(0.9730 0.0133 286.1503);
-  --foreground: oklch(0.3015 0.0572 282.4176);
-
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.3015 0.0572 282.4176);
-
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.3015 0.0572 282.4176);
-
-  --primary: oklch(0.5417 0.1790 288.0332);
-  --primary-foreground: oklch(1 0 0);
-
-  --secondary: oklch(0.9174 0.0435 292.6901);
-  --secondary-foreground: oklch(0.4143 0.1039 288.1742);
-
-  --muted: oklch(0.9580 0.0133 286.1454);
-  --muted-foreground: oklch(0.5426 0.0465 284.7435);
-
-  --accent: oklch(0.9221 0.0373 262.1410);
-  --accent-foreground: oklch(0.3015 0.0572 282.4176);
-
-  --destructive: oklch(0.6861 0.2061 14.9941);
-
-  --border: oklch(0.9115 0.0216 285.9625);
-  --input: oklch(0.9115 0.0216 285.9625);
-  --ring: oklch(0.5417 0.1790 288.0332);
-
-  --radius: 0.5rem;
-}
-
-/* ============================= */
-/*          DARK MODE            */
-/* ============================= */
-
-.dark {
   --background: oklch(0.1743 0.0227 283.7998);
   --foreground: oklch(0.9185 0.0257 285.8834);
 
   --card: oklch(0.2284 0.0384 282.9324);
   --card-foreground: oklch(0.9185 0.0257 285.8834);
-
-  --popover: oklch(0.2284 0.0384 282.9324);
-  --popover-foreground: oklch(0.9185 0.0257 285.8834);
 
   --primary: oklch(0.7162 0.1597 290.3962);
   --primary-foreground: oklch(0.1743 0.0227 283.7998);
@@ -62,14 +19,14 @@
   --accent: oklch(0.3354 0.0828 280.9705);
   --accent-foreground: oklch(0.9185 0.0257 285.8834);
 
+  --destructive: oklch(0.6861 0.2061 14.9941);
+
   --border: oklch(0.3261 0.0597 282.5832);
   --input: oklch(0.3261 0.0597 282.5832);
   --ring: oklch(0.7162 0.1597 290.3962);
-}
 
-/* ============================= */
-/*           BASE LAYER          */
-/* ============================= */
+  --radius: 0.5rem;
+}
 
 @layer base {
   html {
@@ -77,6 +34,148 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: "Inter", sans-serif;
+  }
+}
+
+@layer components {
+  .glass {
+    background-color: color-mix(in srgb, var(--color-surface) 50%, transparent);
+    backdrop-filter: blur(16px);
+    border: 1px solid color-mix(in srgb, var(--color-border) 50%, transparent);
+  }
+
+  .glass-strong {
+    background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+    backdrop-filter: blur(24px);
+    border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+  }
+
+  .glow-text {
+    text-shadow: 0 0 30px
+      color-mix(in srgb, var(--color-primary) 50%, transparent);
+  }
+
+  .glow-border {
+    box-shadow: 0 0 20px
+        color-mix(in srgb, var(--color-primary) 20%, transparent),
+      inset 0 0 20px color-mix(in srgb, var(--color-primary) 5%, transparent);
+  }
+}
+
+@layer utilities {
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+      filter: blur(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes slow-drift {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(20px, -30px);
+    }
+    50% {
+      transform: translate(-15px, -20px);
+    }
+    75% {
+      transform: translate(30px, 10px);
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.8s ease-out both;
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
+
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+
+  .animation-delay-800 {
+    animation-delay: 800ms;
+  }
+
+  @keyframes animated-border {
+    0% {
+      stroke-dashoffset: 400;
+    }
+    100% {
+      stroke-dashoffset: -550;
+    }
+  }
+
+  .group:hover .animated-border-path {
+    animation: animated-border 1.5s linear infinite;
+  }
+
+  .animated-border:hover {
+    background-color: color-mix(in srgb, #26c4b8 15%, transparent);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 0 20px color-mix(in srgb, #26c4b8 20%, transparent);
+  }
+
+  .timeline-glow {
+    box-shadow: 0 0 40px
+        color-mix(in srgb, var(--color-primary) 35%, transparent),
+      0 0 80px color-mix(in srgb, var(--color-primary) 25%, transparent);
   }
 }
