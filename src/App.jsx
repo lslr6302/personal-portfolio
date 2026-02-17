@@ -3,6 +3,7 @@ import Navbar from "./sections/Navbar"
 import Heading from "./sections/Heading"
 import About from "./sections/About"
 import Projects from "./sections/Projects"
+import Footer from "./sections/Footer"
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Heading />
       <About />
       <Projects />
+      <Footer />
 
     </div>
   )

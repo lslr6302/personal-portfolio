@@ -7,34 +7,37 @@ import {
 import { Github } from "lucide-react"
 
 import portfolioPic from "../assets/portfolio.png"
+import physicsPic from "../assets/physics.png"
+import sigmapsPic from "../assets/sigmaps.png"
+import fmlPic from "../assets/fml.png"
 
 const projects = [
   {
     title: "Personal Portfolio",
     description: "A webpage that displays a little about me and my projects. The one you see right now!",
     image: portfolioPic,
-    link: "",
-    tags: ["React", "Javascript"],
+    link: "https://github.com/lslr6302/personal-portfolio",
+    tags: ["React", "Javascript", "Tailwind CSS"],
   },
   {
     title: "Physics Sims",
     description: "Me trying to explore Python libraries thru simple physics simulations.",
-    image: "/project2.png",
-    link: "",
-    tags: ["Python", "numpy", "scipy", "matplotlib"],
+    image: physicsPic,
+    link: "https://github.com/lslr6302/physics-sims",
+    tags: ["Python", "NumPy", "SciPy", "Matplotlib"],
   },
   {
     title: "Fix My Life",
-    description: "Interactive physics simulator.",
-    image: "/project3.png",
-    link: "",
-    tags: ["React", "Typescript", "Python"],
+    description: "Task management application that provides visual statistics.",
+    image: fmlPic,
+    link: "https://se101-team18-flask-app.onrender.com",
+    tags: ["React", "Typescript", "Python", "Flask", "pytest"],
   },
   {
     title: "SigMaps",
-    description: "Navigation",
-    image: "",
-    link: "",
+    description: "AI-powered campus navigation application.",
+    image: sigmapsPic,
+    link: "https://github.com/Shiman-Zhu/suri-is-awe-sum",
     tags: ["React", "Typescript", "Python"],
   },
 ]
@@ -81,7 +84,7 @@ function ProjectCard({ project }) {
         {/* GitHub Link */}
         <CardItem translateZ={70} className="mt-4">
           <a
-            href={project.github}
+            href={project.link}
             target="_blank"
             rel="noopener noreferrer"
             className="
