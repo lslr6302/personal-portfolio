@@ -15,26 +15,51 @@ import {
   TooltipProvider
 } from "../components/Tooltip"
 
+import { useEffect, useRef, useState } from "react"
+
 import profile from "../assets/mypic.jpg"
 import logo from "../assets/logo_w.png"
 
 function Heading() {
+
+    const sectionRef = useRef(null)
+    const [isVisible, setIsVisible] = useState(true)
+
+    useEffect(() => {
+    const observer = new IntersectionObserver(
+        ([entry]) => {
+        if (entry.isIntersecting) {
+            setIsVisible(true)
+        } else {
+            setIsVisible(false)
+        }
+        },
+        { threshold: 0.4 }
+    )
+
+    if (sectionRef.current) {
+        observer.observe(sectionRef.current)
+    }
+
+    return () => observer.disconnect()
+    }, [])
+
   return (
-    <section className="min-h-screen flex items-center relative z-10 px-6">
+    <section ref={sectionRef} id="heading" className="min-h-screen flex items-center relative z-10 px-6">
       <div className="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
 
         {/* LEFT COLUMN */}
         <div className="space-y-6 text-center md:text-left">
-          <h1 className="text-5xl md:text-6xl font-bold text-primary">
+          <h1 className={`text-5xl md:text-6xl font-bold text-primary ${isVisible ? "animate-fade-in animation-delay-100" : ""}`}>
             Carol Meng
           </h1>
 
-          <p className="text-lg text-muted-foreground max-w-md mx-auto md:mx-0">
+          <p className={`text-lg text-muted-foreground max-w-md mx-auto md:mx-0 ${isVisible ? "animate-fade-in animation-delay-200" : ""}`}>
             Software Engineering Student @ UWaterloo
           </p>
 
           <TooltipProvider delayDuration={150}>
-            <div className="flex items-center gap-5 mt-6 text-2xl text-muted-foreground">
+            <div className={`flex items-center gap-5 mt-6 text-2xl text-muted-foreground ${isVisible ? "animate-fade-in animation-delay-300" : ""}`}>
 
               <a
                 href="https://www.linkedin.com/in/carol-meng-1608a32b4/"
@@ -85,7 +110,7 @@ function Heading() {
           </TooltipProvider>
 
             {/* Community Row */}
-            <div className="flex items-center justify-center md:justify-start gap-3 text-sm text-muted-foreground mt-6">
+            <div className={`flex items-center justify-center md:justify-start gap-3 text-sm text-muted-foreground mt-6 ${isVisible ? "animate-fade-in animation-delay-400" : ""}`}>
 
             <span className="text-muted-foreground">
                 check out this cool site:
@@ -135,7 +160,7 @@ function Heading() {
             <img
               src={profile}
               alt="picture of me in the snow"
-              className="w-72 md:w-96 h-auto object-contain rounded-2xl border border-border shadow-2xl"
+              className={`w-72 md:w-96 h-auto object-contain rounded-2xl border border-border shadow-2xl ${isVisible ? "animate-fade-in" : "animate-fade-in"}`}
             />
 
             <div className="absolute inset-0 rounded-2xl bg-primary/20 blur-2xl opacity-0 group-hover:opacity-100 transition duration-500"></div>

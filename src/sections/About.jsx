@@ -1,6 +1,6 @@
 function About() {
   return (
-    <section className="min-h-screen flex items-center relative z-10 px-6">
+    <section id="about" className="min-h-screen flex items-center relative z-10 px-6">
       <div className="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
 
         {/* LEFT COLUMN */}

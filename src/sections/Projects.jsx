@@ -4,62 +4,57 @@ import {
   CardItem,
 } from "../components/Card"
 
+import { Github } from "lucide-react"
+
+import portfolioPic from "../assets/portfolio.png"
+
 const projects = [
   {
-    title: "Project One",
-    description: "AI-powered analytics platform.",
-    image: "/project1.png",
+    title: "Personal Portfolio",
+    description: "A webpage that displays a little about me and my projects. The one you see right now!",
+    image: portfolioPic,
+    link: "",
+    tags: ["React", "Javascript"],
   },
   {
-    title: "Project Two",
-    description: "Full-stack community app.",
+    title: "Physics Sims",
+    description: "Me trying to explore Python libraries thru simple physics simulations.",
     image: "/project2.png",
+    link: "",
+    tags: ["Python", "numpy", "scipy", "matplotlib"],
   },
   {
-    title: "Project Three",
+    title: "Fix My Life",
     description: "Interactive physics simulator.",
     image: "/project3.png",
+    link: "",
+    tags: ["React", "Typescript", "Python"],
+  },
+  {
+    title: "SigMaps",
+    description: "Navigation",
+    image: "",
+    link: "",
+    tags: ["React", "Typescript", "Python"],
   },
 ]
 
 export default function Projects() {
   return (
-    <section className="relative py-32">
-      <h2 className="text-4xl font-bold text-center mb-20">
-        Projects
-      </h2>
+    <section id="projects" className="py-32 px-6">
+      <div className="max-w-6xl mx-auto">
 
-      {/* Timeline line */}
-      <div className="absolute left-1/2 top-0 h-full w-[2px] bg-border -translate-x-1/2" />
+        <h2 className="text-4xl font-bold text-center mb-20 text-primary">
+          Projects
+        </h2>
 
-      <div className="space-y-32">
-        {projects.map((project, index) => {
-          const isLeft = index % 2 === 0
+        {/* Grid Layout */}
+        <div className="grid md:grid-cols-2 gap-16 max-w-7xl mx-auto">
+          {projects.map((project, index) => (
+            <ProjectCard key={index} project={project} />
+          ))}
+        </div>
 
-          return (
-            <div
-              key={index}
-              className="relative flex items-center justify-between w-full animate-fade-in"
-            >
-              {/* Left side */}
-              <div className="w-1/2 flex justify-end pr-12">
-                {isLeft && (
-                  <ProjectCard project={project} />
-                )}
-              </div>
-
-              {/* Timeline dot */}
-              <div className="relative z-10 w-6 h-6 bg-primary rounded-full border-4 border-background" />
-
-              {/* Right side */}
-              <div className="w-1/2 flex justify-start pl-12">
-                {!isLeft && (
-                  <ProjectCard project={project} />
-                )}
-              </div>
-            </div>
-          )
-        })}
       </div>
     </section>
   )
@@ -68,30 +63,67 @@ export default function Projects() {
 function ProjectCard({ project }) {
   return (
     <CardContainer>
-      <CardBody className="relative h-auto w-96 rounded-2xl border bg-card p-6 shadow-xl">
-        <CardItem
-          translateZ={50}
-          className="text-xl font-bold"
-        >
+      <CardBody className="relative w-[500px] rounded-2xl border bg-card p-8 shadow-xl text-primary">
+
+        {/* Title */}
+        <CardItem translateZ={50} className="text-2xl font-bold">
           {project.title}
         </CardItem>
 
+        {/* Description */}
         <CardItem
           translateZ={60}
-          className="mt-2 text-sm text-muted-foreground"
+          className="mt-4 text-muted-foreground"
         >
           {project.description}
         </CardItem>
 
-        <CardItem translateZ={100} className="mt-4">
+        {/* GitHub Link */}
+        <CardItem translateZ={70} className="mt-4">
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              inline-flex items-center gap-2
+              text-primary
+              hover:opacity-80
+              transition-opacity
+              font-medium
+            "
+          >
+            <Github size={18} />
+            View Code
+          </a>
+        </CardItem>
+
+        {/* Tags */}
+        <CardItem translateZ={80} className="mt-6 flex flex-wrap gap-3">
+          {project.tags.map((tag, i) => (
+            <span
+              key={i}
+              className="
+                px-4 py-1 text-sm rounded-full
+                bg-primary/20
+                text-primary
+                border border-primary/30
+              "
+            >
+              {tag}
+            </span>
+          ))}
+        </CardItem>
+
+        {/* Image */}
+        <CardItem translateZ={100} className="mt-6">
           <img
             src={project.image}
             alt={project.title}
             className="rounded-xl object-cover"
           />
         </CardItem>
+
       </CardBody>
     </CardContainer>
   )
 }
-
