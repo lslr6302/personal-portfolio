@@ -55,9 +55,9 @@ function About() {
 
           <p className="text-lg text-muted-foreground max-w-md mx-auto md:mx-0">
             I am currently a software engineering student at the University of Waterloo.<br />
-            I'm interested in robotics or just building cool thing in general, and learning 
+            I'm interested in robotics or just building cool things in general, and learning 
             fascinating things about the universe.<br />
-            During spare time, I like to take pictures about random things, baking, and looking for new cat memes.<br />
+            During spare time, I like to take pictures about random things or sceneries, baking, and looking for new cat memes.<br />
             Currently, I'm trying to make more cool side projects.
           </p>
 
