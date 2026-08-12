@@ -1,122 +1,56 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
 
+const folders = [
+  {id: "about", label: "About Me", bg: "bg-blue-300", text: "text-white", tabPosition: "left-6"},
+  {id: "projects", label: "Projects", bg: "bg-pink-200", text: "text-stone-900", tabPosition: "left-1/3"},
+  {id: "experience", label: "Experience", bg: "bg-stone-400", text: "text-stone-100", tabPosition: "right-1/3"},
+  {id: "whimsy", label: "Whimsy", bg: "bg-green-200", text: "text-white", tabPosition: "left-6"},
+];
+
+const COLLAPSED_HEIGHT = 80;
+const GAP = 8;
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [activeId, setActiveId] = useState("projects");
+
+  const numGaps = folders.length - 1;
+  const collapsedSpace = COLLAPSED_HEIGHT * (folders.length - 1) + GAP * numGaps;
+  const activeRowSize = `calc(100% - ${collapsedSpace}px)`;
+
+  const gridTemplateRows = folders
+    .map((f) => (f.id === activeId ? activeRowSize : `${COLLAPSED_HEIGHT}px`))
+    .join(" ");
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+    <div
+      className="h-screen w-screen bg-amber-100 grid p-4 gap-2 transition-[grid-template-rows] duration-500 ease-in-out"
+      style={{ gridTemplateRows }}
+    >
+      {folders.map((folder, index) => (
+        <div
+          key={folder.id}
+          className="relative"
+          style={{ zIndex: index + 1 }}
         >
-          Count is {count}
-        </button>
-      </section>
+<button
+  onClick={() => setActiveId(folder.id)}
+  className={`absolute -top-4 ${folder.tabPosition} h-10 px-20 ${folder.bg} ${folder.text} text-sm font-bold cursor-pointer`}
+  style={{ clipPath: "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)" }}
+>
+  {folder.label}
+</button>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+          <div
+            onClick={() => setActiveId(folder.id)}
+            className={`${folder.bg} rounded-t-2xl p-4 h-full cursor-pointer overflow-hidden`}
+          >
+            <h2 className={`${folder.text} text-lg font-bold`}>{folder.label}</h2>
+          </div>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      ))}
+    </div>
+  );
 }
 
-export default App
+export default App;
