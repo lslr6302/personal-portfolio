@@ -1,1 +1,251 @@
 @import "tailwindcss";
+
+@theme {
+  /* warm dossier ground */
+  --color-desk: #3a2b1d;
+  --color-desk-2: #2c2016;
+  /* not named --color-cover: that would collide with Tailwind's bg-cover */
+  --color-binder: #4a3826;
+  --color-binder-lip: #5d4831;
+  --color-paper: #f4ecd8;
+  --color-page: #fbf5e6;
+  --color-page-dim: #ece0c6;
+  --color-kraft: #cdbb93;
+
+  /* ink */
+  --color-ink: #2e2519;
+  --color-ink-soft: #6b5b45;
+  --color-ink-faint: #a08f72;
+
+  /* blue accent (stands in for the oxblood of the reference) */
+  --color-accent: #1d4470;
+  --color-accent-deep: #112c4b;
+  --color-accent-soft: #3d6996;
+  --color-accent-wash: #dbe3ee;
+
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-label: "Barlow Condensed", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-label);
+  color: var(--color-ink);
+  background-color: var(--color-desk);
+  background-image:
+    radial-gradient(ellipse at 50% -10%, rgba(120, 95, 60, 0.55) 0%, transparent 62%),
+    url("./assets/cardboard_texture.avif");
+  background-size: auto, 420px;
+  /* the texture is a pale scan, so multiply it into the dark desk colour
+     instead of letting it paint over the top */
+  background-blend-mode: normal, multiply;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ------------------------------------------------------------------ *
+ * Binder 3D mechanics
+ * ------------------------------------------------------------------ */
+
+.binder-stage {
+  perspective: 2600px;
+  -webkit-perspective: 2600px;
+  perspective-origin: 50% 45%;
+}
+
+/* No `position` here on purpose: these rules are unlayered and would beat
+   Tailwind's layered `absolute` utility, collapsing the book to zero height. */
+.binder-book {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+/* one physical sheet: lives on the right half, hinges on its left edge */
+.sheet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: transform 700ms cubic-bezier(0.62, 0.02, 0.24, 1);
+  will-change: transform;
+}
+
+/*
+ * .sheet-face is the backface-hidden shell — it only positions and orients
+ * the face, nothing else. Safari has a long-standing bug where an element
+ * combining `backface-visibility: hidden` with its own `overflow: hidden`
+ * can fail to hide the face once it's rotated away, so the previous page's
+ * (mirrored) content stays visible after a flip. The fix is to keep those
+ * two properties on different elements: overflow clipping happens one level
+ * in, on `.page-surface`.
+ */
+.sheet-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.sheet-face--back {
+  transform: rotateY(180deg);
+}
+
+.page-surface {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--color-page);
+}
+
+/* Paper grain, as a faint overlay rather than a background image: at full
+   strength the scan greys the page out and its tiling seam shows. */
+.page-surface::before,
+.paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+  background-image: url("./assets/paper_texture.jpg");
+  background-size: 1100px;
+}
+
+/* content sits above the grain */
+.page-surface > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* light falling across a page as it turns */
+.page-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 40;
+}
+
+.sheet-face--front .page-surface::after {
+  background: linear-gradient(
+    to right,
+    rgba(40, 28, 14, 0.5),
+    rgba(40, 28, 14, 0) 55%
+  );
+}
+
+.sheet-face--back .page-surface::after {
+  background: linear-gradient(
+    to left,
+    rgba(40, 28, 14, 0.5),
+    rgba(40, 28, 14, 0) 55%
+  );
+}
+
+.sheet.is-turning .page-surface::after {
+  animation: page-sweep 700ms cubic-bezier(0.62, 0.02, 0.24, 1);
+}
+
+@keyframes page-sweep {
+  0% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* the crease nearest the rings, on every page */
+.page-gutter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 46px;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.page-gutter--right {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    rgba(58, 43, 25, 0.26),
+    rgba(58, 43, 25, 0.04) 55%,
+    transparent
+  );
+}
+
+.page-gutter--left {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    rgba(58, 43, 25, 0.26),
+    rgba(58, 43, 25, 0.04) 55%,
+    transparent
+  );
+}
+
+/* scrollable text column inside a page */
+.page-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-kraft) transparent;
+}
+
+.page-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.page-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-kraft);
+  border-radius: 99px;
+}
+
+/* single-page (narrow screen) turn */
+@keyframes page-in-fwd {
+  from {
+    transform: rotateY(-88deg);
+    opacity: 0.2;
+  }
+  to {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes page-in-back {
+  from {
+    transform: rotateY(88deg);
+    opacity: 0.2;
+  }
+  to {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet {
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+  }
+  .sheet.is-turning .sheet-face::after {
+    animation: none;
+  }
+}
